@@ -1,23 +1,27 @@
 "use client";
 import graph from "@/app/component/graph";
 import { firstDiff } from "@/app/script/derivativeMethod";
+import { abs } from "mathjs";
 
 import { useState } from "react";
 
 export default function page() {
   const [equation, setEquation] = useState("");
-  const [error, setError] = useState("");
+  const [order, setOrder] = useState("");
   const [h, setH] = useState("");
   const [x, setX] = useState("");
   const [answer, setAnswer] = useState("");
   const [exact, setExact] = useState("");
   const [data, setData] = useState<{ y: number }[]>();
+  const [error, setError] = useState("");
 
   const calculate = (mode: string) => {
-    console.log(equation, error, h, x, mode);
-    const result = firstDiff(equation ,Number(error) ,Number(x), Number(h), mode);
+    console.log(equation, order, h, x, mode);
+    const result = firstDiff(equation ,Number(order) ,Number(x), Number(h), mode);
     setAnswer(String(result?.approx));
     setExact(String(result?.exact));
+    setError(String(abs((Number(answer)/Number(exact) * 100) - 100)));
+    
   };
 
   return (
@@ -40,10 +44,10 @@ export default function page() {
             <input
               className="col-span-4 border-green-500 p-2 text-lg focus:outline-green-700"
               type="number"
-              value={error}
+              value={order}
               min={0}
               placeholder="h^x"
-              onChange={(e) => setError(e.currentTarget.value)}
+              onChange={(e) => setOrder(e.currentTarget.value)}
             />
             <input
               className="col-span-4 border-green-500 p-2 text-lg focus:outline-green-700"
@@ -83,7 +87,7 @@ export default function page() {
               Approx {answer}
           </div>
           <div className="col-span-12 text-lg font-bold text-green-500">
-              Exact {exact}
+              Error {error}%
           </div>
           <div className="col-span-12 flex justify-center">
             <div className="w-full pr-10 h-72">{graph(data)}</div>
