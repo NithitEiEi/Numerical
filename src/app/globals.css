@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  margin: 0;
+}
+
+input {
+  border: 1px solid;
+}
+
+.numer-title {
+  font-size: 90px;
+}
+
+.min {
+  min-width: 250px;
+}
