@@ -73,7 +73,11 @@ export function gaussJordanElimination(matrix: number[][]) {
   for (let col = 0; col < n; col++) {
     const pivotRow = partialPivot(matrix, col);
     if (matrix[pivotRow][col] === 0) {
-      return [];
+      matrix.pop();
+      for (let i = 0; i < n-1; i++) {
+        solution[i] = matrix[i][n];
+      }
+      return solution;
     }
 
     [matrix[col], matrix[pivotRow]] = [matrix[pivotRow], matrix[col]];

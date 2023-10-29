@@ -80,7 +80,7 @@ export const linearSpline = (x:number[], y:number[], target:number) => {
 export function quadraticSpline(x:number[], y:number[], target:number) {
   const point_quantity = x.length;
   const row_size = 2 * point_quantity + 2;
-  const col_size = 13;
+  const col_size = 2 * point_quantity + 3;
   const matrix:number[][] = [];
   let changeCol = 0;
   let changeX:number = 1;
@@ -127,10 +127,10 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
     }
     nextVar += 3;
   }
-  console.log(matrix);
   
   // return matrix
   const variable = gaussJordanElimination(matrix);
+  
   let answer = 0;
   multiple= 2;
   for(let i = range * 3; i < (range * 3) + 3; i++){
@@ -142,7 +142,6 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
     }
     multiple--;
   }
-  console.log(answer);
   
   return answer;
 }
