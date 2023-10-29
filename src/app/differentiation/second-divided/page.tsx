@@ -33,9 +33,9 @@ export default function page() {
             placeholder="Equation"
             onChange={(e) => setEquation(e.currentTarget.value)}
             />
-            <div className="col-span-4 flex justify-center font-bold">Error of Order</div>
-            <div className="col-span-4 flex justify-center font-bold">X value</div>
-            <div className="col-span-4 flex justify-center font-bold">h range</div>
+            <div className="col-span-4 flex justify-center font-bold">Error of Order (h<sup className="flex items-center">x</sup>)</div>
+            <div className="col-span-4 flex justify-center font-bold">Value</div>
+            <div className="col-span-4 flex justify-center font-bold">Range</div>
             <input
               className="col-span-4 border-green-500 p-2 text-lg focus:outline-green-700"
               type="number"

@@ -23,7 +23,7 @@ export default function Home() {
               Interpolation
             </button>
           </Link>
-          <Link href="/integration/simpson">
+          <Link href="/regression">
             <button className="h-20 bg-zinc-200 py-2 px-4 font-bold hover:bg-purple-400 active:bg-purple-500 transition">
               Regression
             </button>

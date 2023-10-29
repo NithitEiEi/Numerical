@@ -99,7 +99,7 @@ export default function Page() {
             value={field}
             placeholder="Field (2-10)"
             onChange={(e) =>
-              Number(e.currentTarget.value) > 6
+              Number(e.currentTarget.value) > 10
                 ? setField("10")
                 : Number(e.currentTarget.value) < 2
                 ? setField("2")
@@ -194,7 +194,7 @@ export default function Page() {
             Ans {ans}
           </div>
           <div className="col-span-12 w-full px-10 h-72">
-            {graphInter(data, ansData)}
+            {graphInter(data, ansData, true)}
           </div>
         </div>
       </div>

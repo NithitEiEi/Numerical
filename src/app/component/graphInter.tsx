@@ -4,11 +4,10 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    CartesianGrid,
     ResponsiveContainer,
   } from "recharts";
 
-  export const graphInter = (data: any, answer: any) => {
+  export const graphInter = (data: any, answer: any, curve: boolean) => {
     return (
       <>
         <div style={{ width: "100%", height: "100%", marginTop: 20 }}>
@@ -17,7 +16,7 @@ import {
               <XAxis type="number" dataKey="x"/>
               <YAxis dataKey="y" />
               <Line
-                type="monotone"
+                type={curve? "monotone": "linear"}
                 dataKey="y"
                 data={data}
                 stroke="#F39C12"
@@ -28,6 +27,7 @@ import {
                 dataKey="y"
                 data={answer}
                 stroke="#ff0000"
+                fill="red"
                 dot={true}
               />
               <Tooltip/>

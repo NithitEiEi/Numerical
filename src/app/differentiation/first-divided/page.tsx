@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function page() {
   const [equation, setEquation] = useState("");
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState("1");
   const [h, setH] = useState("");
   const [x, setX] = useState("");
   const [answer, setAnswer] = useState("");
@@ -41,13 +41,13 @@ export default function page() {
             onChange={(e) => setEquation(e.currentTarget.value)}
           />
           <div className="col-span-4 flex justify-center font-bold">
-            Error of Order
+            Error of Order (h<sup className="flex items-center">x</sup>)
           </div>
           <div className="col-span-4 flex justify-center font-bold">
-            X value
+            Value
           </div>
           <div className="col-span-4 flex justify-center font-bold">
-            h range
+            Range
           </div>
           <input
             className="col-span-4 border-green-500 p-2 text-lg focus:outline-green-700"
