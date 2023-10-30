@@ -78,9 +78,11 @@ export const linearSpline = (x:number[], y:number[], target:number) => {
 }
 
 export function quadraticSpline(x:number[], y:number[], target:number) {
-  const point_quantity = x.length;
-  const row_size = 2 * point_quantity + 2;
-  const col_size = 2 * point_quantity + 3;
+  const points = x.length;
+  const row_size = 2 * (points - 2) + 2 + (points - 2) + 1;
+  const col_size = 3 * (points - 1) + 1;
+  console.log(row_size, col_size);
+  
   const matrix:number[][] = [];
   let changeCol = 0;
   let changeX:number = 1;
@@ -99,11 +101,14 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
   matrix[0][0] = 1;
 
   // Add x0 - xn
-  for (let row = 2; row < row_size - 3; row += 2) {
+  let count = 0
+  for (let row = 2; row < row_size - (points - 2); row += 2) {
     for (let col = 2; col >= 0; col--) {
       matrix[row - 1][col + changeCol] = Math.pow(x[changeX - 1], 2 - col);
       matrix[row][col + changeCol] = Math.pow(x[changeX], 2 - col);
     }
+    count++;
+    console.log(count);
     matrix[row - 1][col_size - 1] = y[changeX - 1];
     matrix[row][col_size - 1] = y[changeX];
     changeCol += 3;
@@ -113,22 +118,25 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
   let nextVar = 0;
   let multiple:number = 0;
   // x slope
-  for (let row = 0; row < point_quantity - 2; row++) {
+  for (let row = 0; row < (points-2); row++) {
     multiple = 2;
-    for (let col = 0 + nextVar; col < point_quantity - 2 + nextVar; col++) {
-      if (col == 1 + nextVar) {
-        matrix[row + row_size - 3][col] = 1;
-        matrix[row + row_size - 3][col + 3] = -1;
+    for (let col = 0; col < 2; col++) {
+      console.log(col);
+      if (col == 1) {
+        matrix[row + row_size - (points-2)][col + nextVar] = 1;
+        matrix[row + row_size - (points-2)][col + 3 + nextVar] = -1;
       } else {
-        matrix[row + row_size - 3][col] = multiple * x[row + 1];
-        matrix[row + row_size - 3][col + 3] = multiple * x[row + 1] * -1;
+        matrix[row + row_size - (points-2)][col + nextVar] = multiple * x[row + 1];
+        matrix[row + row_size - (points-2)][col + 3 + nextVar] = multiple * x[row + 1] * -1;
       }
       multiple--;
     }
     nextVar += 3;
   }
-  
-  // return matrix
+
+  const showMatrix = matrix.map(row => [...row]);
+  console.log(showMatrix);
+
   const variable = gaussJordanElimination(matrix);
   
   let answer = 0;
