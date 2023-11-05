@@ -1,7 +1,11 @@
 import { gaussJordanElimination } from "./linearMethod";
 
-export const newtonDivide = (x:number[],y:number[],target: number, points?: number[]): number => {
-
+export const newtonDivide = (
+  x: number[],
+  y: number[],
+  target: number,
+  points?: number[]
+): number => {
   const array: number[][] = new Array(x.length)
     .fill(false)
     .map(() => new Array(x.length).fill(false));
@@ -31,11 +35,16 @@ export const newtonDivide = (x:number[],y:number[],target: number, points?: numb
     result += temp;
   }
 
-  console.log(result)
+  console.log(result);
   return result;
-}
+};
 
-export const lagrange = (x:number[], y:number[], target:number, point:number[]) => {
+export const lagrange = (
+  x: number[],
+  y: number[],
+  target: number,
+  point: number[]
+) => {
   const quantity = point.length;
   const xn = [];
   const yn = [];
@@ -46,7 +55,7 @@ export const lagrange = (x:number[], y:number[], target:number, point:number[]) 
   }
   for (let i = 0; i < quantity; i++) {
     let top = 1,
-        bot = 1;
+      bot = 1;
     for (let j = 0; j < quantity; j++) {
       if (j != i) {
         top = top * (xn[j] - target);
@@ -57,37 +66,53 @@ export const lagrange = (x:number[], y:number[], target:number, point:number[]) 
   }
 
   return ans;
-}
+};
 
-function scope(x:number[], target:number) {
+function scope(x: number[], target: number) {
   let check = 0;
-  while(target > x[check]) {
+  while (target > x[check]) {
     check++;
   }
-  return check - 1
+  return check - 1;
 }
 
-export const linearSpline = (x:number[], y:number[], target:number) => {
+const findAns = (value: number, range: number, variable: number[]) => {
+  let answer = 0;
+  let multiple = 2;
+  for (let i = 0; i < +3; i++) {
+    if (multiple == 0) {
+      answer += variable[i + range * 3];
+    } else {
+      answer += variable[i + range * 3] * value ** multiple;
+    }
+    multiple--;
+  }
+  return answer;
+};
+
+export const linearSpline = (x: number[], y: number[], target: number) => {
   let m = 0;
   const range = scope(x, target);
 
   m = (y[range + 1] - y[range]) / (x[range + 1] - x[range]);
 
   const targetFx = m * (target - x[range]) + y[range];
-  return targetFx
-}
+  const data = x.map((value, index) => ({
+    x: value,
+    y: y[index],
+  }));
+  return { answer: targetFx, data: data };
+};
 
-export function quadraticSpline(x:number[], y:number[], target:number) {
+export function quadraticSpline(x: number[], y: number[], target: number) {
   const points = x.length;
   const row_size = 2 * (points - 2) + 2 + (points - 2) + 1;
   const col_size = 3 * (points - 1) + 1;
   console.log(row_size, col_size);
-  
-  const matrix:number[][] = [];
-  let changeCol = 0;
-  let changeX:number = 1;
 
-  let range = scope(x,target);  
+  const matrix: number[][] = [];
+  let changeCol = 0;
+  let changeX: number = 1;
 
   // Initial matrix
   for (let i = 0; i < row_size; i++) {
@@ -101,14 +126,13 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
   matrix[0][0] = 1;
 
   // Add x0 - xn
-  let count = 0
+  let count = 0;
   for (let row = 2; row < row_size - (points - 2); row += 2) {
     for (let col = 2; col >= 0; col--) {
       matrix[row - 1][col + changeCol] = Math.pow(x[changeX - 1], 2 - col);
       matrix[row][col + changeCol] = Math.pow(x[changeX], 2 - col);
     }
     count++;
-    console.log(count);
     matrix[row - 1][col_size - 1] = y[changeX - 1];
     matrix[row][col_size - 1] = y[changeX];
     changeCol += 3;
@@ -116,40 +140,45 @@ export function quadraticSpline(x:number[], y:number[], target:number) {
   }
 
   let nextVar = 0;
-  let multiple:number = 0;
+  let multiple: number = 0;
   // x slope
-  for (let row = 0; row < (points-2); row++) {
+  for (let row = 0; row < points - 2; row++) {
     multiple = 2;
     for (let col = 0; col < 2; col++) {
-      console.log(col);
       if (col == 1) {
-        matrix[row + row_size - (points-2)][col + nextVar] = 1;
-        matrix[row + row_size - (points-2)][col + 3 + nextVar] = -1;
+        matrix[row + row_size - (points - 2)][col + nextVar] = 1;
+        matrix[row + row_size - (points - 2)][col + 3 + nextVar] = -1;
       } else {
-        matrix[row + row_size - (points-2)][col + nextVar] = multiple * x[row + 1];
-        matrix[row + row_size - (points-2)][col + 3 + nextVar] = multiple * x[row + 1] * -1;
+        matrix[row + row_size - (points - 2)][col + nextVar] =
+          multiple * x[row + 1];
+        matrix[row + row_size - (points - 2)][col + 3 + nextVar] =
+          multiple * x[row + 1] * -1;
       }
       multiple--;
     }
     nextVar += 3;
   }
 
-  const showMatrix = matrix.map(row => [...row]);
-  console.log(showMatrix);
-
   const variable = gaussJordanElimination(matrix);
-  
-  let answer = 0;
-  multiple= 2;
-  for(let i = range * 3; i < (range * 3) + 3; i++){
-    if(multiple == 0) {
-    answer += variable[i] 
-    }
-    else {
-      answer += variable[i] * target**multiple;
-    }
-    multiple--;
+
+  const dataX = [...x];
+  const dataY = [...y];
+
+  for (let i = 0; i < x.length * 2 - 2; i += 2) {
+    const insertValue = (dataX[i] + dataX[i + 1]) / 2;
+    dataX.splice(i + 1, 0, insertValue);
+
+    dataY.splice(
+      i + 1,
+      0,
+      findAns(insertValue, scope(x, insertValue), variable)
+    );
   }
-  
-  return answer;
+
+  const answer = findAns(target, scope(x, target), variable);
+  const data = dataX.map((value, index) => ({
+    x: value,
+    y: dataY[index],
+  }));
+  return { answer: answer, data: data };
 }

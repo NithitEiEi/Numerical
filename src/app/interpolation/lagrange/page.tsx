@@ -194,7 +194,7 @@ export default function Page() {
             Ans {ans}
           </div>
           <div className="col-span-12 w-full px-10 h-72">
-            {graphInter(data, ansData, true)}
+            {graphInter(data, ansData, false)}
           </div>
         </div>
       </div>

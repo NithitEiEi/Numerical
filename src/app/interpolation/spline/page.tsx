@@ -10,7 +10,7 @@ export default function Page() {
   const [field, setField] = useState("2");
   const [target, setTarget] = useState("");
   const [ans, setAns] = useState("");
-  const [data, setData] = useState<{ x: string; y: string }[]>([]);
+  const [data, setData] = useState<{ x: number; y: number }[]>([]);
   const [ansData, setAnsData] = useState<{ x: number; y: number }[]>([]);
   const [curve, setCurve] = useState(false);
 
@@ -38,23 +38,20 @@ export default function Page() {
     const parameterX = x.map((value) => Number(value));
     const parameterY = y.map((value) => Number(value));
 
-    let result;
 
     if(mode === "quadratic") {
-      result = quadraticSpline(parameterX, parameterY, Number(target));
+      const result = quadraticSpline(parameterX, parameterY, Number(target));
+      setAns(String(result.answer));
+      setData(result.data);
+      setAnsData([{x: Number(target), y: result.answer}])
       setCurve(true);
     } else if(mode === "linear") {
-      result = linearSpline(parameterX, parameterY, Number(target));
+      const result = linearSpline(parameterX, parameterY, Number(target));
+      setAns(String(result.answer));
+      setData(result.data);
+      setAnsData([{x: Number(target), y: result.answer}])
       setCurve(false);
     }
-
-    const GivenData = x.map((value, index) => ({
-      x: value,
-      y: y[index],
-    }));
-    setData(GivenData);
-    setAnsData([{ x: Number(target), y: Number(result) }]);
-    setAns(String(result));
   };
 
   const clear = () => {
