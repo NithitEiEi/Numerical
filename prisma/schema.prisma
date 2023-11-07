@@ -22,7 +22,7 @@ model Matrix {
     id        Int       @id @default(autoincrement())
     symetric  Boolean   @default(false)
     size      Int
-    Ax        String[]
+    Ax        Json[]
     B         String[]
 
     @@map("matrix")

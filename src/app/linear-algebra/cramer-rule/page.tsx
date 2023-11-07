@@ -1,6 +1,7 @@
 "use client";
 
 import { cramer } from "@/app/script/linearMethod";
+import axios from "axios";
 import { useState } from "react";
 
 export default function Page() {
@@ -11,6 +12,29 @@ export default function Page() {
   ]);
   const [b, setB] = useState<string[]>(["", ""]);
   const [answer, setAnswer] = useState<number[]>([]);
+
+  const handler = (req: any) => {
+    axios.post("/api/linear-algebra", {
+      Ax: req.Ax,
+      B: req.B,
+      size: req.size,
+      symetric: req.symetric
+    })
+  }
+
+  const randomProblem = () => {
+    axios
+      .get("/api/linear-algebra", {
+        params: { size: field, symetric: false },
+      })
+      .then((response) => {
+        setA(response.data.Ax);
+        setB(response.data.B);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   const handleField = () => {
     const oldA = [...a];
@@ -57,6 +81,15 @@ export default function Page() {
     const matrixNumberB: number[] = b.map((row) => Number(row));
     const result = cramer(matrixNumberA, matrixNumberB);
     setAnswer(result);
+
+    const problem = {
+      Ax: a,
+      B: b,
+      size: Number(field),
+      symetric: false
+    }
+
+    handler(problem);
   };
 
   const clear = () => {
@@ -87,7 +120,17 @@ export default function Page() {
     <title>Cramer's Rule</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-16 p-8 grid grid-cols-12 border-2 border-red-400 w-1/2 gap-4">
-          <div className="col-span-12 text-2xl font-bold">Cramer's Rule</div>
+        <div className="col-span-12 flex justify-between">
+            <span className="text-2xl w-full font-bold">
+              Cramer Rule
+            </span>
+            <button
+              className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 active:border-red-400 rounded focus:outline-red-600"
+              onClick={randomProblem}
+            >
+              random
+            </button>
+          </div>
           <input
             className="col-span-3 border-red-500 p-2 focus:outline-red-700 text-lg"
             type="number"

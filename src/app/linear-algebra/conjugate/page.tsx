@@ -2,6 +2,7 @@
 
 import { conjugateGradient } from "@/app/script/linearMethod";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Page() {
   const [field, setField] = useState("2");
@@ -12,6 +13,29 @@ export default function Page() {
   const [b, setB] = useState<string[]>(["", ""]);
   const [x0, setX0] = useState<string[]>(["", ""]);
   const [answer, setAnswer] = useState<number[]>([]);
+
+  const handler = (req: any) => {
+    axios.post("/api/linear-algebra", {
+      Ax: req.Ax,
+      B: req.B,
+      size: req.size,
+      symetric: req.symetric,
+    });
+  };
+
+  const randomProblem = () => {
+    axios
+      .get("/api/linear-algebra", {
+        params: { size: field, symetric: true },
+      })
+      .then((response) => {
+        setA(response.data.Ax);
+        setB(response.data.B);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   const handleField = () => {
     const oldA = [...a];
@@ -48,12 +72,10 @@ export default function Page() {
   const calculate = () => {
     for (let i = 0; i < b.length; i++) {
       if (b[i] === "") {
-        console.log("should input all fields");
         return;
       }
       for (let j = 0; j < a[0].length; j++) {
         if (a[i][j] === "") {
-          console.log("should input all fields");
           return;
         }
       }
@@ -62,8 +84,15 @@ export default function Page() {
     const matrixB: number[] = b.map((row) => Number(row));
     const initialX0: number[] = x0.map((row) => Number(row));
     const result = conjugateGradient(matrixA, matrixB, initialX0);
-    console.log(result);
     setAnswer(result);
+    const problem = {
+      Ax: a,
+      B: b,
+      size: Number(field),
+      symetric: true,
+    };
+
+    handler(problem);
   };
 
   const clear = () => {
@@ -94,10 +123,20 @@ export default function Page() {
 
   return (
     <>
-    <title>Conjugate Gradient</title>
+      <title>Conjugate Gradient</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-16 p-8 grid grid-cols-12 border-2 border-red-400 w-1/2 gap-4">
-          <div className="col-span-12 text-2xl font-bold">Conjugate Gradient</div>
+          <div className="col-span-12 flex justify-between">
+            <span className="text-2xl w-full font-bold">
+              Conjugate Gradient
+            </span>
+            <button
+              className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 active:border-red-400 rounded focus:outline-red-600"
+              onClick={randomProblem}
+            >
+              random
+            </button>
+          </div>
           <input
             className="col-span-3 border-red-500 p-2 focus:outline-red-700 text-lg"
             type="number"
