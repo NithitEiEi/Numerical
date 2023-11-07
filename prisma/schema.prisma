@@ -22,27 +22,26 @@ model Matrix {
     id        Int       @id @default(autoincrement())
     symetric  Boolean   @default(false)
     size      Int
-    matrix    Json
-    vector    Json
+    Ax        String[]
+    B         String[]
 
     @@map("matrix")
 }
 
 model Interpolation {
     id      Int      @id @default(autoincrement())
-    target  Float
-    x       Float[]
-    y       Float[]
+    x       String[]
+    y       String[]
 
     @@map("interpolation")
 }
 
 model Regression {
     id       Int      @id @default(autoincrement())
-    target   Float[]
-    multiple Boolean  @default(false)
-    x        Json
-    y        Float[]
+    size     Int
+    xn       Int
+    x        Json[]
+    y        String[]
 
     @@map("regression")
 }

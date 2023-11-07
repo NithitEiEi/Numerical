@@ -18,3 +18,7 @@ input {
 .min {
   min-width: 250px;
 }
+
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}

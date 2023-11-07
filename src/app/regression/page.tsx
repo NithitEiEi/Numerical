@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { graphRegression } from "../component/regressionGraph";
 import {
   linearLeastSquares,
@@ -82,7 +83,23 @@ export default function Page() {
       }
     }
     setData(giveData);
+    const problem = {
+      size: Number(field),
+      xn: Number(multipleValue),
+      x: x,
+      y: y,
+    }
+    handler(problem);
   };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/regression", {
+      size: Number(field),
+      xn: Number(multipleValue),
+      x: x,
+      y: y,
+    })
+  }
 
   const clear = () => {
     const newX = [];
