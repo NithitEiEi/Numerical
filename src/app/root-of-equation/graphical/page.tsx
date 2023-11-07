@@ -1,6 +1,7 @@
 "use client";
 import graph from "@/app/component/graph";
 import { graphical } from "@/app/script/rootMethod";
+import axios from "axios";
 import { useState } from "react";
 
 export default function page() {
@@ -12,7 +13,19 @@ export default function page() {
     const result = graphical(equation);
     setAnswer(String(result[result.length - 1].y));
     setData(result);
+    const problem = {
+      equation: equation,
+      type: "fx"
+    }
+    handler(problem);
   };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/root-of-equation", {
+      equation: req.equation,
+      type: req.type,
+    });
+  }
 
   return (
     <>

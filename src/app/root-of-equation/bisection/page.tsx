@@ -2,6 +2,7 @@
 import graph from "@/app/component/graph";
 import { bisection } from "@/app/script/rootMethod";
 import { useState } from "react";
+import axios from "axios";
 
 export default function page() {
   const [equation, setEquation] = useState("");
@@ -14,7 +15,20 @@ export default function page() {
     const result = bisection(equation, Number(x0), Number(x1));
     setAnswer(String(result[result.length - 1].y));
     setData(result);
+    const problem = {
+      equation: equation,
+      type: "fx"
+    }
+    handler(problem);
   };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/root-of-equation", {
+      equation: req.equation,
+      type: req.type,
+    });
+  }
+
   return (
     <>
       <div className="mt-12 flex justify-center items-center">

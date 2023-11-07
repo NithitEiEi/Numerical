@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Roe {
+    id       Int     @id @default(autoincrement())
+    type     String
+    equation String
+
+    @@map("roe")
+}
+
+model Matrix {
+    id        Int       @id @default(autoincrement())
+    symetric  Boolean   @default(false)
+    size      Int
+    matrix    Json
+    vector    Json
+
+    @@map("matrix")
+}
+
+model Interpolation {
+    id      Int      @id @default(autoincrement())
+    target  Float
+    x       Float[]
+    y       Float[]
+
+    @@map("interpolation")
+}
+
+model Regression {
+    id       Int      @id @default(autoincrement())
+    target   Float[]
+    multiple Boolean  @default(false)
+    x        Json
+    y        Float[]
+
+    @@map("regression")
+}
+
+model Integration {
+    id       Int      @id @default(autoincrement())
+    equation String
+
+    @@map("integration")
+}
+
+model Differentiation {
+    id       Int      @id @default(autoincrement())
+    equation String
+
+    @@map("differentiation")
+}

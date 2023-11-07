@@ -3,6 +3,7 @@ import graph from "@/app/component/graph";
 import { firstDiff } from "@/app/script/derivativeMethod";
 import { abs } from "mathjs";
 import { useState } from "react";
+import axios from "axios";
 
 export default function page() {
   const [equation, setEquation] = useState("");
@@ -24,7 +25,18 @@ export default function page() {
     );
     setAnswer(String(result?.approx));
     setExact(String(result?.exact));
+    const problem = {
+      equation: equation,
+    }
+
+    handler(problem);
   };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/differentiation", {
+      equation: req.equation,
+    });
+  }
 
   return (
     <>

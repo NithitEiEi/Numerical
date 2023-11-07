@@ -3,6 +3,7 @@
 import areaGraph from "@/app/component/areaGraph";
 import { trapezoidal } from "@/app/script/integrateMethod";
 import { useState } from "react";
+import axios from "axios";
 
 export default function page() {
   const [equation, setEquation] = useState("");
@@ -16,7 +17,18 @@ export default function page() {
     const result = trapezoidal(equation, Number(n), Number(x0), Number(x1));
     setAnswer(result.area);
     setData(result.data);
+    const problem = {
+      equation: equation,
+    }
+
+    handler(problem)
   };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/integration", {
+      equation: req.equation,
+    });
+  }
 
   return (
     <>
