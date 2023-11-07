@@ -113,6 +113,7 @@ export default function Page() {
 
   return (
     <>
+    <title>Least-Square Regression</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-16 p-8 grid grid-cols-12 border-2 border-purple-400 w-1/2 gap-4">
           <div className="col-span-12 text-2xl font-bold">

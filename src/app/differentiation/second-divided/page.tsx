@@ -34,6 +34,7 @@ export default function page() {
 
   return (
     <>
+    <title>Differentiation</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-14 p-8 grid grid-cols-12 border-2 border-green-400 w-1/2 gap-4">
           <div className="col-span-12 text-2xl w-full font-bold">

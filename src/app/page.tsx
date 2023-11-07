@@ -3,6 +3,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
+    <title>Numerical Method</title>
       <div className="w-screen h-screen">
         <h1 className="absolute left-20 top-40 font-bold numer-title">
           Nummerical Method

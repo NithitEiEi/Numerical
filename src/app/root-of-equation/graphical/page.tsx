@@ -29,6 +29,7 @@ export default function page() {
 
   return (
     <>
+    <title>Graphical Method</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="p-8 grid grid-cols-12 border-2 border-blue-400 w-1/2 gap-4">
           <div className="col-span-12 text-2xl w-full font-bold">
