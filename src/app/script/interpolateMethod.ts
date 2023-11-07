@@ -34,8 +34,6 @@ export const newtonDivide = (
 
     result += temp;
   }
-
-  console.log(result);
   return result;
 };
 

@@ -98,12 +98,10 @@ const sumXnY = (x:number[][], y:number[]) => {
     matrixB = [];
     for(let i = 0; i < x.length; i++) {
       const xn = getX(x, j);
-      console.log(xn[i] * y[i]);
       matrixB.push(xn[i] * y[i]);
     }
     let value = sumX(matrixB, 1);
     result.push(value);
-    console.log("value", value);
     
   }
   return result;

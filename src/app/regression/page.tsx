@@ -38,13 +38,26 @@ export default function Page() {
     setAns("");
   };
 
+  const randomProblem = () => {
+    axios
+      .get("/api/regression", {
+        params: { size: field, xn: multipleValue },
+      })
+      .then((response) => {
+        setX(response.data.x);
+        setY(response.data.y);
+        
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   const calculate = () => {
     const parameterX = x.map((value, row) =>
       x[row].map((value, col) => parseFloat(value))
     );
     const parameterY = y.map((value) => Number(value));
-    console.log(parameterX);
-    console.log(parameterY);
     if (Number(multipleValue) == 1) {
       const result = linearLeastSquares(
         parameterX,
@@ -88,7 +101,7 @@ export default function Page() {
       xn: Number(multipleValue),
       x: x,
       y: y,
-    }
+    };
     handler(problem);
   };
 
@@ -98,8 +111,8 @@ export default function Page() {
       xn: Number(multipleValue),
       x: x,
       y: y,
-    })
-  }
+    });
+  };
 
   const clear = () => {
     const newX = [];
@@ -114,7 +127,6 @@ export default function Page() {
       newP.push(false);
       newY.push("");
     }
-    console.log(newX);
 
     setTarget("");
     setX(newX);
@@ -130,11 +142,19 @@ export default function Page() {
 
   return (
     <>
-    <title>Least-Square Regression</title>
+      <title>Least-Square Regression</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-16 p-8 grid grid-cols-12 border-2 border-purple-400 w-1/2 gap-4">
-          <div className="col-span-12 text-2xl font-bold">
-            Least square Regression
+          <div className="col-span-12 flex justify-between">
+            <span className="text-2xl w-full font-bold">
+              Least square Regression
+            </span>
+            <button
+              className="bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 active:border-purple-400 rounded focus:outline-purple-600"
+              onClick={randomProblem}
+            >
+              random
+            </button>
           </div>
           <input
             id="field"

@@ -30,6 +30,7 @@ model Matrix {
 
 model Interpolation {
     id      Int      @id @default(autoincrement())
+    size    Int
     x       String[]
     y       String[]
 

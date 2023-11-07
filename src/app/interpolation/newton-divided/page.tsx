@@ -3,6 +3,7 @@
 import { graphInter } from "@/app/component/graphInter";
 import { newtonDivide } from "@/app/script/interpolateMethod";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Page() {
   const [x, setX] = useState<string[]>(["", ""]);
@@ -13,6 +14,28 @@ export default function Page() {
   const [ans, setAns] = useState("");
   const [data, setData] = useState<{ x: string; y: string }[]>([]);
   const [ansData, setAnsData] = useState<{ x: number; y: number }[]>([]);
+
+  const randomProblem = () => {
+    axios
+      .get("/api/interpolation", {
+        params: { size: field },
+      })
+      .then((response) => {
+        setX(response.data.x);
+        setY(response.data.y);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handler = async (req: any) => {
+    const response = axios.post("/api/interpolation", {
+      size: Number(field),
+      x: x,
+      y: y,
+    });
+  };
 
   const handleField = () => {
     const newX = [];
@@ -51,7 +74,12 @@ export default function Page() {
       return;
     }
 
-    const result = newtonDivide(parameterX, parameterY, Number(target), parameterP);
+    const result = newtonDivide(
+      parameterX,
+      parameterY,
+      Number(target),
+      parameterP
+    );
     const GivenData = x.map((value, index) => ({
       x: value,
       y: y[index],
@@ -59,6 +87,13 @@ export default function Page() {
     setData(GivenData);
     setAnsData([{ x: Number(target), y: result }]);
     setAns(String(result));
+
+    const problem = {
+      size: field,
+      x: x,
+      y: y,
+    };
+    handler(problem);
   };
 
   const clear = () => {
@@ -85,11 +120,19 @@ export default function Page() {
 
   return (
     <>
-    <title>Newton's Divided Difference</title>
+      <title>Newton's Divided Difference</title>
       <div className="mt-12 flex justify-center items-center">
         <div className="mb-16 p-8 grid grid-cols-12 border-2 border-amber-400 w-1/2 gap-4">
-          <div className="col-span-12 text-2xl font-bold">
-            Newton Divided
+          <div className="col-span-12 flex justify-between">
+            <span className="text-2xl w-full font-bold">
+              Newton Divide Interpolation
+            </span>
+            <button
+              className="bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 px-4 border-b-4 border-amber-700 hover:border-amber-500 active:border-amber-400 rounded focus:outline-amber-600"
+              onClick={randomProblem}
+            >
+              random
+            </button>
           </div>
           <input
             id="field"
