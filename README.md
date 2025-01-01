@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Numerical Method app
+Using numerical method to find approximate answer. Visualize brute force, regression, interpolation, area under curve with graph 
 
-## Getting Started
+## Content
+- Root of equation - find X that makes equation zero
+- Linear algebra - find multiple value of variables
+- Interpolation - find missing value based from exist data
+- regression - find the best line to cover all the data to predict unseen data
+- Integration - calculating the area under a curve
+- Derivation -  process of finding the derivative of a function
 
-First, run the development server:
+## Example UI
+### Linear Algebra
+<img src="https://drive.google.com/uc?id=1eyav1qapuL94g5eRz5Fgn4JSDBB-JVeE" width="500">
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Interpolation
+<img src="https://drive.google.com/uc?id=1ysIr9Ug9DvO0VCVKFd3GeWjgXizLS2Eg" width="500">
+<img src="https://drive.google.com/uc?id=1nh-0fpNOiOT-92RSd9MqlpQB6XGVA9L8" width="500">
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Root of equation
+<img src="https://drive.google.com/uc?id=19P48AkbRvfCzTedYCvYOU5O0VQko5p_Y" width="500">
